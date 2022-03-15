@@ -1,7 +1,6 @@
 import React from "react";
 import { BottomNavigation, Text } from "react-native-paper";
-
-const AppFeed = () => <Text>This is feed</Text>
+import AppFeed from "./AppFeed";
 
 const MyProfile = () => <Text>This is my profile</Text>
 

@@ -1,15 +1,14 @@
+import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
-import AppBottomNavigation from './components/AppBottomNavigation';
+import AppAuthentication from './components/AppAuthentication';
 
 export default function App() {
   return (
     <PaperProvider>
-      <SafeAreaView>
-      </SafeAreaView>
-
-      <AppBottomNavigation />
+      <NavigationContainer>
+        <AppAuthentication />
+      </NavigationContainer>
 
       <StatusBar style='auto'/>
     </PaperProvider>
