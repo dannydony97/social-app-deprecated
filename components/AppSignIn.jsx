@@ -37,13 +37,13 @@ const AppSignIn = ({navigation}) => {
                     <View style={styles.line} />
                     <Button
                         mode='contained'
-                        onPress={() => console.log('Button pressed')}>SUBMIT
+                        onPress={() => console.log('Button pressed')}>SIGN IN
                     </Button>
                     <Text style={styles.forgotText}>Forgot password?</Text>
                     <Text style={styles.joinText}>Don't have an account?</Text>
                     <Button
                         mode='outlined'
-                        onPress={() => navigation.navigate("SignUp")}>Join Social App
+                        onPress={() => navigation.navigate("SignUp")}>SIGN UP
                     </Button>
                 </Card.Content>
             </Card>
