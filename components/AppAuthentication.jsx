@@ -1,7 +1,9 @@
 import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import AppLogIn from "./AppLogIn";
 import { useTheme } from "react-native-paper";
+
+import AppSignIn from "./AppSignIn";
+import AppSignUp from "./AppSignUp";
 
 const Stack = createStackNavigator();
 
@@ -12,9 +14,10 @@ const AppAuthentication = () => {
     return (
         <Stack.Navigator>
                 <Stack.Screen 
-                    name="Log in" 
-                    component={AppLogIn}
+                    name="SignIn" 
+                    component={AppSignIn}
                     options={{
+                        title: "Sign In",
                         headerStyle: {
                             backgroundColor: colors.primary
                         },
@@ -23,6 +26,12 @@ const AppAuthentication = () => {
                         }
                     }}
                 />
+                <Stack.Screen 
+                    name="SignUp"
+                    component={AppSignUp}
+                    options={{
+                        title: "Sign Up"
+                    }}/>
         </Stack.Navigator>
     );
 };
