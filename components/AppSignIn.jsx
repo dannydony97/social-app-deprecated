@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Card, Checkbox, TextInput, Text } from "react-native-paper";
-import theme from "../themes";
+import theme from "../common/themes";
 
 const AppSignIn = ({navigation}) => {
 
