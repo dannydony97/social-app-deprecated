@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Keyboard, StyleSheet, View, KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 import { Button, Card, Checkbox, TextInput, Text } from "react-native-paper";
 import theme from "../common/themes";
 
@@ -12,7 +12,10 @@ const AppSignIn = ({navigation}) => {
     const [passwordVisible, setPasswordVisible] = React.useState(false);
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView>
+            <TouchableWithoutFeedback
+                onPress={() => Keyboard.dismiss()}
+            >
             <Card style={styles.card} >
                 <Card.Title title="Social App" subtitle="Log In"/>
                 <Card.Content>
@@ -50,15 +53,12 @@ const AppSignIn = ({navigation}) => {
                     </Button>
                 </Card.Content>
             </Card>
-        </View>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        flex: 1,
-    },
     card: {
         margin: '3%',
         width: '94%',

@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleSheet, View } from "react-native";
+import { Keyboard, StyleSheet, View, KeyboardAvoidingView, TouchableWithoutFeedback} from "react-native";
 import { Card, Button, TextInput, HelperText } from "react-native-paper";
 import DefaultDefines from "../common/DefaultDefines";
 
@@ -13,10 +13,7 @@ const AppSignUp = ({navigation}) => {
     const [passwordVisivle, setPasswordVisible] = React.useState(false);
     const [repeatPasswordVisible, setRepeatPasswordVisible] = React.useState(false);
 
-    const [validUserName, setValidUserName] = React.useState(false);
     const [userNameMessage, setUserNameMessage] = React.useState("");
-
-    const [validEmailAddress, setValidEmailAddress] = React.useState(false);
     const [emailAddressMessage, setEmailAddressMessage] = React.useState("");
 
     const [validPassword, setValidPassword] = React.useState(false);
@@ -40,15 +37,20 @@ const AppSignUp = ({navigation}) => {
             setValidPassword(true);
             setPasswordMessage("");
         }
+
+        verifyMatchingPasswords(text, repeatPassword);
     };
 
     const onRepeatPasswordTextChanged = (text) => {
 
         setRepeatPassword(text);
-        verifyMatchingPasswords();
+        verifyMatchingPasswords(password, text);
     };
 
     const verifyMatchingPasswords = (password, repeatedPassword) => {
+
+        if(!repeatPassword.length)
+            return;
 
         if(password !== repeatedPassword) {
             setRepeatValidPassword(false);
@@ -59,15 +61,59 @@ const AppSignUp = ({navigation}) => {
         }
     };
 
+    const validateUserName = () => {
+
+        return true;
+    }
+
+    const validateEmail = () => {
+
+        if(!emailAddress.length) {
+            setEmailAddressMessage("Email address cannot be empty");
+            return false;
+        }
+
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailAddress)) {
+            
+            setEmailAddressMessage("");
+            return true;
+        }
+
+        setEmailAddressMessage("Invalid email address format!");
+        return false;
+    }
+
     const onCreateAccountButtonPressed = () => {
 
-        setPassword(text);
-        
+        if(!validateUserName())
+            return;
+
+        if(!validateEmail())
+            return;
+
+        if(!validPassword || !repeatValidPassword)
+            return;
+
+        fetch("http://localhost:5000/create-account/", {
+            method: 'POST',
+            body: JSON.stringify({
+                userName: userName,
+                emailAddress: emailAddress,
+                password: password
+            })
+        })
+        .then((response) => response.json())
+        .then((content) => {
+
+        });
 
     };
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView>
+            <TouchableWithoutFeedback
+                onPress={() => Keyboard.dismiss()}
+            >
             <Card style={styles.card}>
                 <Card.Title title="Let's get started!" subtitle="Create an account to social app"/>
                 <Card.Content>
@@ -86,7 +132,7 @@ const AppSignUp = ({navigation}) => {
                     value={emailAddress}
                     onChangeText={(text) => setEmailAddress(text)}
                 />
-                <HelperText>{emailAddressMessage}</HelperText>
+                <HelperText type="error">{emailAddressMessage}</HelperText>
                 <TextInput
                     style={styles.textInput}
                     mode="outlined"
@@ -114,15 +160,12 @@ const AppSignUp = ({navigation}) => {
                 </Button>
                 </Card.Content>
             </Card>
-        </View>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        flex: 1,
-    },
     card: {
         margin: '3%',
         width: '94%',
@@ -133,6 +176,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10
     },
+    textInput: {
+        height: 45
+    }
 });
 
 export default AppSignUp;
