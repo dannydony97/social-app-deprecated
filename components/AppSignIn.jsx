@@ -9,6 +9,8 @@ const AppSignIn = ({navigation}) => {
     const [password, setPassword] = React.useState("");
     const [keepSignedIn, setKeepSignedIn] = React.useState(false);
 
+    const [passwordVisible, setPasswordVisible] = React.useState(false);
+
     return (
         <View style={styles.container}>
             <Card style={styles.card} >
@@ -27,7 +29,8 @@ const AppSignIn = ({navigation}) => {
                         label="Password"
                         value={password}
                         onChangeText={(text) => setPassword(text)}
-                        secureTextEntry={true}
+                        right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)}/>}
+                        secureTextEntry={!passwordVisible}
                     />
                     <Checkbox.Item
                         label="Keep me signed in"
