@@ -1,17 +1,16 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { Provider as PaperProvider } from "react-native-paper";
-import theme from "./common/themes";
+import { View } from "react-native-ui-lib";
 import AppAuthentication from "./screens/AppAuthentication";
 
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
+    <View flex>
       <NavigationContainer>
         <AppAuthentication />
       </NavigationContainer>
 
       <StatusBar style="auto" />
-    </PaperProvider>
+    </View>
   );
 }

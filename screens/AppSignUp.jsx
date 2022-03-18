@@ -6,8 +6,9 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Button, TextInput, HelperText, Text } from "react-native-paper";
+import { TextField, Text, Button } from "react-native-ui-lib";
 import DefaultDefines from "../common/DefaultDefines";
+import TextHelper from "../components/TextHelper";
 
 const AppSignUp = ({ navigation }) => {
   const [userName, setUserName] = React.useState("");
@@ -105,66 +106,43 @@ const AppSignUp = ({ navigation }) => {
         <View style={styles.signUpView}>
           <View style={styles.innerView}>
             <Text style={styles.title}>Let's get started!</Text>
-            <Text style={styles.subtitle}>Create an account to social app"</Text>
-            <TextInput
-              style={styles.textInput}
-              mode="outlined"
-              label="User name"
+            <Text style={styles.subtitle}>Create an account to social app</Text>
+            <TextField
+              fieldStyle={{backgroundColor: 'orange'}}
+              placeholder="User name"
+              floatingPlaceholder
               value={userName}
               onChangeText={(text) => setUserName(text)}
             />
-            <HelperText>{userNameMessage}</HelperText>
-            <TextInput
-              style={styles.textInput}
-              mode="outlined"
-              label="Email Address"
+            <TextHelper>{userNameMessage}</TextHelper>
+            <TextField
+              placeholder="Email Address"
+              floatingPlaceholder
               value={emailAddress}
               onChangeText={(text) => setEmailAddress(text)}
             />
-            <HelperText type="error">{emailAddressMessage}</HelperText>
-            <TextInput
-              style={styles.textInput}
-              mode="outlined"
-              label="Password"
+            <Text type="error">{emailAddressMessage}</Text>
+            <TextField
+              placeholder="Password"
+              floatingPlaceholder
               value={password}
               onChangeText={(text) => onPasswordTextChaned(text)}
-              right={
-                <TextInput.Icon
-                  name={passwordVisivle ? "eye" : "eye-off"}
-                  onPress={() => setPasswordVisible(!passwordVisivle)}
-                />
-              }
               secureTextEntry={!passwordVisivle}
             />
-            <HelperText type={!validPassword ? "error" : "info"}>
-              {passwordMessage}
-            </HelperText>
-            <TextInput
-              style={styles.textInput}
-              mode="outlined"
-              label="Repeat password"
+            <Text type={!validPassword ? "error" : "info"}>{passwordMessage}</Text>
+            <TextField
+              placeholder="Repeat password"
+              floatingPlaceholder
               value={repeatPassword}
               onChangeText={(text) => onRepeatPasswordTextChanged(text)}
-              right={
-                <TextInput.Icon
-                  name={repeatPasswordVisible ? "eye" : "eye-off"}
-                  onPress={() =>
-                    setRepeatPasswordVisible(!repeatPasswordVisible)
-                  }
-                />
-              }
               secureTextEntry={!repeatPasswordVisible}
             />
-            <HelperText type={!repeatValidPassword ? "error" : "info"}>
-              {repeatPasswordMessage}
-            </HelperText>
+            <Text type={!repeatValidPassword ? "error" : "info"}>{repeatPasswordMessage}</Text>
             <View style={styles.line} />
             <Button
-              mode="outlined"
+              label="CREATE ACCOUNT"
               onPress={() => onCreateAccountButtonPressed()}
-            >
-              CREATE ACCOUNT
-            </Button>
+            />
           </View>
         </View>
       </TouchableWithoutFeedback>
