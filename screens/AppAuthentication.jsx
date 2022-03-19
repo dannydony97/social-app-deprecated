@@ -10,6 +10,9 @@ const AppAuthentication = () => {
   return (
     <Stack.Navigator
       initialRouteName="SignIn"
+      screenOptions={{
+        headerTintColor: 'black'
+      }}
     >
       <Stack.Screen
         name="SignIn"

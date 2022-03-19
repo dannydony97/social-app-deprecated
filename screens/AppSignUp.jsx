@@ -6,9 +6,8 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from "react-native";
-import { TextField, Text, Button } from "react-native-ui-lib";
+import { Incubator, Text, Button, Colors } from "react-native-ui-lib";
 import DefaultDefines from "../common/DefaultDefines";
-import TextHelper from "../components/TextHelper";
 
 const AppSignUp = ({ navigation }) => {
   const [userName, setUserName] = React.useState("");
@@ -19,74 +18,32 @@ const AppSignUp = ({ navigation }) => {
   const [passwordVisivle, setPasswordVisible] = React.useState(false);
   const [repeatPasswordVisible, setRepeatPasswordVisible] = React.useState(false);
 
-  const [userNameMessage, setUserNameMessage] = React.useState("");
-  const [emailAddressMessage, setEmailAddressMessage] = React.useState("");
+  const [validUserName, setValidUserName]                  = React.useState(true);
+  const [validEmailAddress, setValidEmailAddress]          = React.useState(true);
+  const [validPassword, setValidPassword]                  = React.useState(true);
+  const [repeatValidPassword, setValidRepeatValidPassword] = React.useState(true);
 
-  const [validPassword, setValidPassword] = React.useState(false);
-  const [passwordMessage, setPasswordMessage] = React.useState("");
-
-  const [repeatValidPassword, setRepeatValidPassword] = React.useState(false);
-  const [repeatPasswordMessage, setRepeatPasswordMessage] = React.useState();
-
-  const onPasswordTextChaned = (text) => {
-    setPassword(text);
-
-    if (text.length === 0) {
-      setValidPassword(false);
-      setPasswordMessage("Password cannot be empty!");
-    } else if (text.length < DefaultDefines.passwordMinLength) {
-      setValidPassword(false);
-      setPasswordMessage("Password is too short!");
-    } else {
-      setValidPassword(true);
-      setPasswordMessage("");
-    }
-
-    verifyMatchingPasswords(text, repeatPassword);
-  };
-
-  const onRepeatPasswordTextChanged = (text) => {
-    setRepeatPassword(text);
-    verifyMatchingPasswords(password, text);
-  };
-
-  const verifyMatchingPasswords = (password, repeatedPassword) => {
-    if (!repeatPassword.length) return;
-
-    if (password !== repeatedPassword) {
-      setRepeatValidPassword(false);
-      setRepeatPasswordMessage("Password does not match!");
-    } else {
-      setRepeatValidPassword(true);
-      setRepeatPasswordMessage("Password matched!");
-    }
-  };
-
-  const validateUserName = () => {
+  const validateUserName = (value) => {
     return true;
   };
 
-  const validateEmail = () => {
-    if (!emailAddress.length) {
-      setEmailAddressMessage("Email address cannot be empty");
-      return false;
-    }
-
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailAddress)) {
-      setEmailAddressMessage("");
-      return true;
-    }
-
-    setEmailAddressMessage("Invalid email address format!");
-    return false;
+  const validateEmailAddress = (value) => {
+    return true;
   };
 
   const onCreateAccountButtonPressed = () => {
-    if (!validateUserName()) return;
+      
+    if(!validUserName || !userName.length)
+        return;
 
-    if (!validateEmail()) return;
+    if(!validEmailAddress || !emailAddress.length)
+        return;
 
-    if (!validPassword || !repeatValidPassword) return;
+    if(!validPassword || !password.length)
+        return;
+
+    if(!repeatValidPassword || !repeatPassword.length)
+        return;
 
     fetch("http://localhost:5000/create-account/", {
       method: "POST",
@@ -96,8 +53,8 @@ const AppSignUp = ({ navigation }) => {
         password: password,
       }),
     })
-      .then((response) => response.json())
-      .then((content) => {});
+    .then((response) => response.json())
+    .then((content) => {});
   };
 
   return (
@@ -107,37 +64,56 @@ const AppSignUp = ({ navigation }) => {
           <View style={styles.innerView}>
             <Text style={styles.title}>Let's get started!</Text>
             <Text style={styles.subtitle}>Create an account to social app</Text>
-            <TextField
-              fieldStyle={{backgroundColor: 'orange'}}
+            <Incubator.TextField
+              preset="default"
               placeholder="User name"
               floatingPlaceholder
               value={userName}
-              onChangeText={(text) => setUserName(text)}
+              onChangeText={(value) => setUserName(value)}
+              enableErrors
+              validate={['required', (value) => validateUserName(value)]}
+              validationMessage={['Field is required!', 'This user name already exists!']}
+              validateOnBlur
+              onChangeValidity={(isValid) => setValidUserName(isValid)}
             />
-            <TextHelper>{userNameMessage}</TextHelper>
-            <TextField
+            <Incubator.TextField
+              preset="default"
               placeholder="Email Address"
               floatingPlaceholder
               value={emailAddress}
-              onChangeText={(text) => setEmailAddress(text)}
+              onChangeText={(value) => setEmailAddress(value)}
+              enableErrors
+              validate={['required', 'email', (value) => validateEmailAddress(value)]}
+              validationMessage={['Field is required!', 'Email is invalid', 'This email address is already used!']}
+              validateOnBlur
+              onChangeValidity={(isValid) => setValidEmailAddress(isValid)}
             />
-            <Text type="error">{emailAddressMessage}</Text>
-            <TextField
+            <Incubator.TextField
+              preset="default"
               placeholder="Password"
               floatingPlaceholder
               value={password}
-              onChangeText={(text) => onPasswordTextChaned(text)}
+              onChangeText={(text) => setPassword(text)}
               secureTextEntry={!passwordVisivle}
+              enableErrors
+              validate={['required', (value) => value.length >= 8]}
+              validationMessage={['Field is required!', 'Password is too short!']}
+              validateOnChange
+              onChangeValidity={(isValid) => setValidPassword(isValid)}
             />
-            <Text type={!validPassword ? "error" : "info"}>{passwordMessage}</Text>
-            <TextField
+            <Incubator.TextField
+              preset="default"
               placeholder="Repeat password"
               floatingPlaceholder
               value={repeatPassword}
-              onChangeText={(text) => onRepeatPasswordTextChanged(text)}
+              onChangeText={(value) => setRepeatPassword(value)}
               secureTextEntry={!repeatPasswordVisible}
+              enableErrors
+              validate={['required', (value) => password === value]}
+              validationMessage={['Field is required!', 'Passwords does not match!']}
+              validateOnChange
+              onChangeValidity={(isValid) => setValidRepeatValidPassword(isValid)}
             />
-            <Text type={!repeatValidPassword ? "error" : "info"}>{repeatPasswordMessage}</Text>
             <View style={styles.line} />
             <Button
               label="CREATE ACCOUNT"
@@ -172,9 +148,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
   },
-  textInput: {
-    height: 45,
-  },
+  withUnderline: {
+    height: 30,
+    borderBottomWidth: 1,
+    borderColor: Colors.$outlineDisabledHeavy,
+    paddingBottom: 4
+  }
 });
 
 export default AppSignUp;
