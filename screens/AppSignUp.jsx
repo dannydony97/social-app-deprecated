@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import {
   Keyboard,
@@ -44,17 +45,33 @@ const AppSignUp = ({ navigation }) => {
 
     if(!repeatValidPassword || !repeatPassword.length)
         return;
-
+       
     fetch("http://localhost:5000/create-account/", {
-      method: "POST",
-      body: JSON.stringify({
-        userName: userName,
-        emailAddress: emailAddress,
-        password: password,
-      }),
-    })
-    .then((response) => response.json())
-    .then((content) => {});
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify({a: 1, b: 'Textual content'})
+    }).catch((error) => {
+        console.error(error);
+    });
+    
+    // axios.post("http://localhost:5000/create-account/", {
+    //     userName: userName,
+    //     emailAddress: emailAddress,
+    //     password: password,
+    // })
+    // .then((response) => {
+    //     console.log(response);
+    // })
+    // .catch((error) => {
+    //     console.error(error);
+    // });
+
+    navigation.navigate("EmailVerification", {
+        emailAddress: emailAddress
+    });
   };
 
   return (

@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import AppSignIn from "./AppSignIn";
 import AppSignUp from "./AppSignUp";
+import AppEmailVerification from "./AppEmailVerification";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,11 @@ const AppAuthentication = () => {
         name="SignUp"
         component={AppSignUp}
         options={{ title: "Sign Up" }}
+      />
+      <Stack.Screen
+        name="EmailVerification"
+        component={AppEmailVerification}
+        options={{title: "Email Verification"}}
       />
     </Stack.Navigator>
   );
