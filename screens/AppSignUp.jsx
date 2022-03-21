@@ -6,9 +6,9 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import { Incubator, Text, Button, Colors } from "react-native-ui-lib";
-import DefaultDefines from "../common/DefaultDefines";
 
 const AppSignUp = ({ navigation }) => {
   const [userName, setUserName] = React.useState("");
@@ -34,44 +34,55 @@ const AppSignUp = ({ navigation }) => {
 
   const onCreateAccountButtonPressed = () => {
       
-    if(!validUserName || !userName.length)
-        return;
+    try {
 
-    if(!validEmailAddress || !emailAddress.length)
-        return;
+      if(!validUserName || !userName.length)
+        throw("User name error! Please check!");
 
-    if(!validPassword || !password.length)
-        return;
+      if(!validEmailAddress || !emailAddress.length)
+        throw("Email address error! Please check!");
 
-    if(!repeatValidPassword || !repeatPassword.length)
-        return;
+      if(!validPassword || !password.length)
+        throw("Password error! Please check!");
+
+      if(!repeatValidPassword || !repeatPassword.length)
+        throw("Password error! Please check!");
        
-    fetch("http://localhost:5000/create-account/", {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-        body: JSON.stringify({a: 1, b: 'Textual content'})
-    }).catch((error) => {
-        console.error(error);
-    });
+        // fetch("http://localhost:5000/create-account/", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //       },
+        //     body: JSON.stringify({a: 1, b: 'Textual content'})
+        // }).catch((error) => {
+        //     console.error(error);
+        // });
     
-    // axios.post("http://localhost:5000/create-account/", {
-    //     userName: userName,
-    //     emailAddress: emailAddress,
-    //     password: password,
-    // })
-    // .then((response) => {
-    //     console.log(response);
-    // })
-    // .catch((error) => {
-    //     console.error(error);
-    // });
+        const data = {
+          userName: "Dani",
+          emailAddress: "dannydony97@gmail.com",
+          password: "Gheorghe100",
+        }
 
-    navigation.navigate("EmailVerification", {
-        emailAddress: emailAddress
-    });
+        console.log(data);
+    
+        axios.post("http://localhost:5000/create-account/", data)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+        navigation.navigate("EmailVerification", {
+          emailAddress: emailAddress
+        });
+
+    } catch(err) {
+      Alert.alert(err);
+    }
+
   };
 
   return (

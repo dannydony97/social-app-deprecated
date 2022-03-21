@@ -1,17 +1,19 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native";
-import { View } from "react-native-ui-lib";
+import { AuthProvider } from "./providers/AuthProvider";
 import AppAuthentication from "./screens/AppAuthentication";
 
 export default function App() {
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <NavigationContainer>
-        <AppAuthentication />
-      </NavigationContainer>
+  return ( 
+    <AuthProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <AppAuthentication />
+        </NavigationContainer>
 
-      <StatusBar style="auto" />
-    </SafeAreaView>
+        <StatusBar style="auto" /> 
+      </SafeAreaView>
+    </AuthProvider>
   );
 }

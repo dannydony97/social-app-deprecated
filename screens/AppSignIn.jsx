@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from "react-native";
-import { TextField, Checkbox, Button, Text } from "react-native-ui-lib";
+import { Incubator, Checkbox, Button, Text, Colors } from "react-native-ui-lib";
+const { TextField } = Incubator;
 
 const AppSignIn = ({ navigation }) => {
   const [emailAddress, setEmailAddress] = React.useState("");
@@ -21,6 +22,8 @@ const AppSignIn = ({ navigation }) => {
             <Text text30 marginT-30 marginB-10>Social App</Text>
             <TextField
               text65
+              fieldStyle={styles.withUnderline}
+              containerStyle={{paddingBottom: 20}}
               placeholder="Email address"
               floatingPlaceholder
               value={emailAddress}
@@ -28,6 +31,8 @@ const AppSignIn = ({ navigation }) => {
             />
             <TextField
               text65
+              fieldStyle={styles.withUnderline}
+              containerStyle={{paddingBottom: 40}}
               placeholder="Password"
               floatingPlaceholder
               value={password}
@@ -91,6 +96,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 30,
     marginBottom: 10,
+  },
+  withUnderline: {
+    borderBottomWidth: 1,
+    borderColor: Colors.$outlineDisabledHeavy,
+    paddingBottom: 4
   },
 });
 
