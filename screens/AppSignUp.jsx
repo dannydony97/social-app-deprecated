@@ -53,7 +53,7 @@ const AppSignUp = ({ navigation }) => {
         //     headers: {
         //         'Accept': 'application/json',
         //         'Content-Type': 'application/json'
-        //       },
+        //       }
         //     body: JSON.stringify({a: 1, b: 'Textual content'})
         // }).catch((error) => {
         //     console.error(error);
@@ -65,15 +65,19 @@ const AppSignUp = ({ navigation }) => {
           password: "Gheorghe100",
         }
 
-        console.log(data);
-    
-        axios.post("http://localhost:5000/create-account/", data)
-        .then((response) => {
-          console.log(response);
+        fetch('https://eu-central-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/social-app-objfp/service/helloWorld/incoming_webhook/helloWorld')
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+    
+        // axios.post('https://eu-central-1.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/social-app-objfp/service/helloWorld/incoming_webhook/helloWorld')
+        // .then((response) => {
+        //   console.log(response);
+        // })
+        // .catch((err) => {
+        //   console.log(err);
+        // });
 
         navigation.navigate("EmailVerification", {
           emailAddress: emailAddress
